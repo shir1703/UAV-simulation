@@ -187,65 +187,66 @@ To visualize flight paths:
 1. Use Python, MATLAB, or Excel to plot results from `UAV<n>.txt`.  
 2. Example Python script for plotting:  
    ```python
-import matplotlib.pyplot as plt
-import numpy as np
+   import matplotlib.pyplot as plt
+   import numpy as np
 
 
-def read_path_data(filename):
-    times = []
-    x_coords = []
-    y_coords = []
-    azimuths = []
+   def read_path_data(filename):
+       times = []
+       x_coords = []
+       y_coords = []
+       azimuths = []
 
-    with open(filename, 'r') as file:
-        for line in file:
-            # Skip empty lines
-            if not line.strip():
-                continue
+       with open(filename, 'r') as file:
+           for line in file:
+               # Skip empty lines
+               if not line.strip():
+                   continue
 
-            # Check if the line contains commas or spaces to decide how to parse it
-            if ',' in line:
-                # Parse the line with commas (old format)
-                parts = line.split(',')
-                times.append(float(parts[0].split(':')[1]))
-                x_coords.append(float(parts[1].split(':')[1]))
-                y_coords.append(float(parts[2].split(':')[1]))
-                azimuths.append(float(parts[3].split(':')[1]))
-            else:
-                # Parse the line with spaces (new format)
-                parts = line.split()
-                times.append(float(parts[0]))
-                x_coords.append(float(parts[1]))
-                y_coords.append(float(parts[2]))
-                azimuths.append(float(parts[3]))
+               # Check if the line contains commas or spaces to decide how to parse it
+               if ',' in line:
+                   # Parse the line with commas (old format)
+                   parts = line.split(',')
+                   times.append(float(parts[0].split(':')[1]))
+                   x_coords.append(float(parts[1].split(':')[1]))
+                   y_coords.append(float(parts[2].split(':')[1]))
+                   azimuths.append(float(parts[3].split(':')[1]))
+               else:
+                   # Parse the line with spaces (new format)
+                   parts = line.split()
+                   times.append(float(parts[0]))
+                   x_coords.append(float(parts[1]))
+                   y_coords.append(float(parts[2]))
+                   azimuths.append(float(parts[3]))
 
-    return np.array(times), np.array(x_coords), np.array(y_coords), np.array(azimuths)
-
-
-def plot_points_only(filename):
-    times, x_coords, y_coords, _ = read_path_data(filename)
-
-    plt.figure(figsize=(10, 8))
-
-    scatter = plt.scatter(x_coords, y_coords, c=times, cmap='viridis', s=100)
-
-    # הוספת נקודת התחלה וסיום
-    plt.scatter(x_coords[0], y_coords[0], color='green', s=200, label='Start')
-    plt.scatter(x_coords[-1], y_coords[-1], color='red', s=200, label='End')
-
-    # הגדרות הגרף
-    plt.grid(True)
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.title('Path Visualization for UAV1.txt')
-    plt.colorbar(scatter, label='Time')
-    plt.legend()
-
-    plt.axis('equal')
-
-    plt.show()
+       return np.array(times), np.array(x_coords), np.array(y_coords), np.array(azimuths)
 
 
-# שימוש בפונקציה
-if __name__ == "__main__":
-    plot_points_only("path_data.txt")  # replace with output file
+   def plot_points_only(filename):
+       times, x_coords, y_coords, _ = read_path_data(filename)
+
+       plt.figure(figsize=(10, 8))
+
+       scatter = plt.scatter(x_coords, y_coords, c=times, cmap='viridis', s=100)
+
+       # Highlight start and end points
+       plt.scatter(x_coords[0], y_coords[0], color='green', s=200, label='Start')
+       plt.scatter(x_coords[-1], y_coords[-1], color='red', s=200, label='End')
+
+       # Graph settings
+       plt.grid(True)
+       plt.xlabel('X')
+       plt.ylabel('Y')
+       plt.title('Path Visualization for UAV1.txt')
+       plt.colorbar(scatter, label='Time')
+       plt.legend()
+
+       plt.axis('equal')
+
+       plt.show()
+
+
+   # Use the function
+   if __name__ == "__main__":
+       plot_points_only("path_data.txt")  # replace with output file
+
